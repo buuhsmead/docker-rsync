@@ -1,6 +1,9 @@
 #!/bin/bash
 
-[ -f /modules/.modules.conf ] && cat /modules/.modules.conf >> /etc/rsyncd.conf
+[ "${CONFIG_FILE}" == "" ] && CONFIG_FILE="/modules/.modules.conf"
+echo "*** Using config ${CONFIG_FILE}"
+
+[ -f ${CONFIG_FILE} ] && cat ${CONFIG_FILE} >> /etc/rsyncd.conf
 
 chmod o-w,g-w -R /modules/*
 chown rsync:rsync -R /modules/*
