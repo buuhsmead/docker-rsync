@@ -9,6 +9,6 @@ RUN useradd rsync
 
 VOLUME ["/modules"] 
 
-EXPOSE 873
+EXPOSE 8873
 
 CMD ["/start.sh"]

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+[ "${PORT}" == "" ] && PORT=8873
 [ "${CONFIG_FILE}" == "" ] && CONFIG_FILE="/modules/.modules.conf"
 echo "*** Using config ${CONFIG_FILE}"
 
@@ -8,4 +9,4 @@ echo "*** Using config ${CONFIG_FILE}"
 #chmod o-w,g-w -R /modules/*
 #chown rsync:rsync -R /modules/*
 
-/usr/bin/rsync --daemon --no-detach --config=/etc/rsyncd.conf --log-file=/var/log/rsyncd.log -v
+/usr/bin/rsync --daemon --no-detach --port=${PORT} --config=/etc/rsyncd.conf --log-file=/modules/rsyncd.log -v
