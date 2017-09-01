@@ -9,4 +9,6 @@ echo "*** Using config ${CONFIG_FILE}"
 #chmod o-w,g-w -R /modules/*
 #chown rsync:rsync -R /modules/*
 
-/usr/bin/rsync --daemon --no-detach --port=${PORT} --config=/etc/rsyncd.conf --log-file=/modules/rsyncd.log -v
+/usr/bin/rsync --daemon --port=${PORT} --config=/etc/rsyncd.conf --log-file=/modules/rsyncd.log -v
+
+tail -f /modules/*.log
