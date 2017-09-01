@@ -1,0 +1,127 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    labels:
+      app: rsyncd
+    name: rsyncd
+  spec:
+    deprecatedPublicIPs:
+    - 192.168.1.5
+    externalIPs:
+    - 192.168.1.5
+    ports:
+    - name: 873-tcp
+      port: 873
+      protocol: TCP
+      targetPort: 8873
+    selector:
+      app: rsyncd
+      deploymentconfig: rsyncd
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewApp
+    creationTimestamp: null
+    generation: 1
+    labels:
+      app: rsyncd
+    name: rsyncd
+  spec:
+    replicas: 1
+    selector:
+      app: rsyncd
+      deploymentconfig: rsyncd
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: rsyncd
+          deploymentconfig: rsyncd
+      spec:
+        containers:
+        - env:
+          - name: CONFIG_FILE
+            value: /etc/rsyncd/rsyncd.conf
+          image: docker-registry.default.svc:5000/rsync/rsyncd@sha256:20c8f63b7647a92831da1484fec699521f3def6c6e2b244f2c3d80a598da7fe5
+          imagePullPolicy: Always
+          name: rsyncd
+          ports:
+          - containerPort: 8873
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /modules
+            name: modules
+          - mountPath: /etc/rsyncd
+            name: volume-egwo1
+          - mountPath: /etc/secrets/
+            name: volume-tmsop
+            readOnly: true
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: modules
+          persistentVolumeClaim:
+            claimName: rsync-modules
+        - configMap:
+            defaultMode: 420
+            items:
+            - key: example-rsyncd.conf
+              path: rsyncd.conf
+            name: rsyncd
+          name: volume-egwo1
+        - name: volume-tmsop
+          secret:
+            defaultMode: 400
+            items:
+            - key: example-rsyncd.secrets
+              path: rsyncd.secrets
+            secretName: rsyncd
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - rsyncd
+        from:
+          kind: ImageStreamTag
+          name: rsyncd:latest
+          namespace: rsync
+      type: ImageChange
+  status:
+    availableReplicas: 0
+    latestVersion: 0
+    observedGeneration: 0
+    replicas: 0
+    unavailableReplicas: 0
+    updatedReplicas: 0
+kind: List
+metadata: {}
