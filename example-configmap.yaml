@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  example-rsyncd.conf: "max connections = 3\nlog file = /modules/rsync.log\ntimeout
+    = 300\n  \n[pub]\ncomment = Public\npath = /modules/pub\nread only = false\nuse
+    chroot = false\nlist = yes\nauth users = pub\nsecrets file = /etc/secrets/rsyncd.secrets"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: rsyncd
