@@ -46,7 +46,7 @@ items:
     runPolicy: Serial
     source:
       git:
-        uri: http://gogs-fabric8.apps.home/ed/rsyncd.git
+        uri: http://git.apps.home/demo/rsyncd.git
       type: Git
     strategy:
       dockerStrategy:
