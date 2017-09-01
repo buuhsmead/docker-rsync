@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    kind: nfs
+  name: rsync-modules
+spec:
+  accessModes:
+  - ReadOnlyMany
+  capacity:
+    storage: 400Gi
+  nfs:
+    path: /var/media/rsync
+    server: stor.home
+  persistentVolumeReclaimPolicy: Recycle
+status: {}
